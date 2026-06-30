@@ -24,9 +24,9 @@ export const db = {
     return mapEntry(rows[0]);
   },
 
-  async updateEntry(id: number, body: string, occurredOn: string, tags: string[]): Promise<Entry> {
+  async updateEntry(id: number, body: string, occurredOn: string | null, tags: string[]): Promise<Entry> {
     const rows = await sql()`UPDATE entries
-      SET body=${body}, occurred_on=${occurredOn}, tags=${tags}
+      SET body=${body}, occurred_on=COALESCE(${occurredOn}, occurred_on), tags=${tags}
       WHERE id=${id} RETURNING *`;
     return mapEntry(rows[0]);
   },

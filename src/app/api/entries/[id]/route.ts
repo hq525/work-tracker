@@ -9,7 +9,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   if (typeof body !== "string" || body.trim() === "") {
     return NextResponse.json({ error: "body is required" }, { status: 400 });
   }
-  const entry = await db.updateEntry(entryId, body.trim(), occurredOn, Array.isArray(tags) ? tags : []);
+  const entry = await db.updateEntry(entryId, body.trim(), occurredOn ?? null, Array.isArray(tags) ? tags : []);
   let matchedCount: number | null = null;
   try {
     const rows = await matchEntry(entry, await db.listQuestions());
